@@ -1,5 +1,5 @@
 # Pihype
-## A PHP MVC Framework for secure, fast, dynamic web development.
+## A Better PHP MVC Framework for secure, fast, dynamic web development.
 
 @ Version 1.0.1 Beta
 
