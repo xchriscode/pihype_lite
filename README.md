@@ -38,6 +38,38 @@ Controllers generated are saved in application/controllers/
 They have 
 	
 	_c.php extension
+
+# How to create a controller
+in application/controllers/
+filaname: home_c.php
+	
+	class Home
+	{
+		// index method to interact with model and render a view or views
+		public function index()
+		{
+			//Load Modules
+			$app = $this->app;
+			$db = $this->mysqli; // if connect_with is mysqli
+			$addon = $this->addon; 
+			$message = $this->message;
+			$model = $this->model;
+
+			//If you want to log a message and generate ouput when view has been rendered
+			$message->success("message here");
+			$message->warning("You should be good!");
+			$message->error("Authorization failed!");
+
+			//Render a view
+			$app->render("index"); or $app->render("home/index"); or $app->render("about/index")
+			// If in another controller, you can use this.
+			// This will force a redirect
+			$app->renderNew("account/login");
+
+			// How to call a model from a controller
+			$login = $model->login("/users"); // users is a method in login class
+		}
+	}
 	
 # Models
 Models are saved in application/model/
