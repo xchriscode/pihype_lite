@@ -55,7 +55,7 @@ filaname: home_c.php
 			$message = $this->message;
 			$model = $this->model;
 
-			//If you want to log a message and generate ouput when view has been rendered
+			//If you want to log a message and generate output when view has been rendered
 			$message->success("message here");
 			$message->warning("You should be good!");
 			$message->error("Authorization failed!");
@@ -84,6 +84,21 @@ Models can be accessed from a controller like this:
 	$model->home("/users");
 	// That's how fast we could work with models
 
+# How form sends data to a model from a view
+	
+	<form action="@login/users" method="post">
+		// input tags and more
+	</form>
+
+Data sent is first handled by the controller, so must be declared in the controller before the model would process the request.
+How to declare in the controller
+	
+		$login = $model->login("/users");
+		// If there is any special data you want to send back to the view you can use the method below
+		$app->send($login)->render("home/login");
+		// And in your view you can receive the sent data with the variable $Sent
+
+
 # Views
 Views generated are saved in application/views/, in a controller directory.
 Views are rendered from the a controller with a method avaliable in the App module.
@@ -96,7 +111,25 @@ See example:
 		// Render a view outside home controller
 		$app->renderNew("about/index");
 
-If view not found, would be created when system runs.
+# How to display errors, call images, js, videos, mp3, css etc from a view 
+	
+	// Asssume file name is application/views/home/index.phtml
+
+	// GET css
+	<link rel="stylesheet" href="<?=$Css->load('main')?>"/>
+	// GET Javascript
+	<script src="<?=$Js->load('bootstrap')?>"></script>
+	// GET image
+	<img src="<?=Image->load('pihype.jpg')?>"/>
+	// Load other files from assets folder
+	<video><source src="<?=$Assets->load('media/video.mp4')?>"></source></video>
+	// Set a link
+	<a href="<?=$Url->set('home/login')?>"> Login </a>
+	// Display a message
+	<?=$Out->message?>
+	// And much more..
+
+If view not found, would be created when script runs.
 
 
 # Packager
@@ -173,5 +206,23 @@ This returns result[s] as an object
 	$db->result(query, Param) # Returns an object by default, but when param set, will return an array
 
 
+# Working with RESTFUL APIs
+Pihype has it ready for you. With a little confiuration you are good to start your server.
 
+	Open: RestfulApi/restapi.php
 
+	private $auth_column = ["username","password"];
+	private $auth_table = "authentication";
+	private $digest = true;
+
+	// auth_column : for db authentication. USER and PW
+	// auth_table : Name of db table where query would check to see if user can be permitted to use the API
+	// digest: True if Basic Auth is required to access make PUT/GET/DELETE/POST calls
+	
+
+	Avaliable Methods
+	1. GET
+	2. POST
+	3. PUT (Avoids data duplication, supports multiple requests)
+	4. DELETE
+	Returns JSON encoded data, takes JSON formatted data.

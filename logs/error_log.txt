@@ -1,4 +1,0 @@
-# Controller -home not found/ready. Please check /controllers
-# [Oct 24, 2017 12:32 am] Controller -home not found/ready. Please check /controllers
-# [Oct 24, 2017 2:16 am] Cannot find model -login in /models
-router.php cannot be load. Reason: dosen't exists in directory.app.php cannot be load. Reason: dosen't exists in directory.post.config.php cannot be load. Reason: dosen't exists in directory.post.config.php cannot be load. Reason: dosen't exists in directory.
