@@ -63,4 +63,14 @@ See example:
 		
 		// Render a view outside home controller
 		$app->renderNew("about/index");
-	
+
+If view not found, would be created when system runs.
+
+
+# Packager
+Packager would help you set-up header, css, javascripts, meta tags etc.
+
+
+# Header & Footer
+Header and footer file can found in assets/ directory. 
+
