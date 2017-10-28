@@ -53,7 +53,7 @@ Models can be accessed from a controller like this:
 	// That's how fast we could work with models
 
 # Views
-Views generated are saved in application/views/ in a controller directory.
+Views generated are saved in application/views/, in a controller directory.
 Views are rendered from the a controller with a method avaliable in the App module.
 See example:
 	
@@ -68,7 +68,22 @@ If view not found, would be created when system runs.
 
 
 # Packager
-Packager would help you set-up header, css, javascripts, meta tags etc.
+The packager.json file would help you set-up header, css, javascripts, meta tags etc.
+Packager file can be found in the root directory. 
+
+		{
+			"title":"",
+			"keywords":"",
+			"version":"1.0",
+			"description":"",
+			"framework":"Pihype Lite aplha",
+			"website":"www.pihype.com",
+			"author":"",
+			"assets":{
+				"javascripts":"bootstrap.js",
+				"css":"bootstrap.css"
+			}
+		}
 
 
 # Header & Footer
