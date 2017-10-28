@@ -207,7 +207,7 @@ This returns result[s] as an object
 
 
 # Working with RESTFUL APIs
-Pihype has it ready for you. With a little confiuration you are good to start your server.
+Pihype has it ready for you. With a little configuration you are good to serve restful requests.
 
 	Open: RestfulApi/restapi.php
 
