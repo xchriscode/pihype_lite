@@ -1,8 +1,9 @@
-# Pihype LITE
-## A PHP MVC Web Framework for most secure, faster development.
+# Pihype
+## A PHP MVC Framework for secure, fast, dynamic web development.
 
-@ Version 1.0.1
-@ Developed by Xchriscode.
+@ Version 1.0.1 Beta
+
+Developed by Xchriscode.
 
 @ Features And Benefits
 
