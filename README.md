@@ -89,3 +89,57 @@ Packager file can be found in the root directory.
 # Header & Footer
 Header and footer file can found in assets/ directory. 
 
+# Database
+Pihype supports MYSQLI and PDO, can be configured in the router/router.php file. 
+See example below:
+
+	// Set Database connection
+	$router->db_config = "-h localhost; -u root; -p ; -n snapiefund";
+	$router->connect_with = "mysqli"; 
+
+	/* 
+	  -h host
+	  -u user
+	  -p password
+	  -n name
+	*/
+
+# Database methods
+Database methods are avalible for all you models and controllers, below are list of avaliable methods for mysqli and pdo.
+	
+	$db = $this->mysqli;
+	// or if pdo
+	$db = $this->pdo;
+
+	// Make a select query
+	$db->verb("get/users/1");
+	// This makes a select query and get the record with an id of 1
+	// Optional params
+	$db->verb("get/users/-w userid = 2 and username = 'pihype'");
+	-w = where
+	-o = order by
+	-l = limit
+
+This returns result[s] as an object
+
+
+	Make an insertion
+	$db->verb("put/users","username:'paul', fullname:'chris allison'");
+	Returns number of affected row / true
+
+	Make a deletion
+	$db->verb("delete/users/1");
+	Returns true if query was successful and false otherwise.
+
+	Make an update
+	$db->verb("update/users/2","username:'mickke'");
+	Returns true or false
+
+	Other Methods:
+	$db->rows(query) # Returns the number of rows in that query
+	$db->runquery(sql) # Performs Query and returns Query Object
+	$db->result(query, Param) # Returns an object by default, but when param set, will return an array
+
+
+
+
