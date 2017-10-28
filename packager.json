@@ -1,0 +1,20 @@
+{
+	"title":"SnapieFund",
+
+	"keywords":"snapiefund, snapiefund.com, snapie fund, 50% bitcoin",
+
+	"version":"1.0",
+
+	"description":"SnapieFund will give help you balance your income",
+
+	"framework":"Pihype Lite aplha",
+
+	"website":"www.pihype.com",
+
+	"author":"",
+
+	"assets":{
+		"javascripts":"bootstrap.js",
+		"css":"bootstrap.css"
+	}
+}

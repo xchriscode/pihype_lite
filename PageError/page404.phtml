@@ -1,0 +1,22 @@
+<div class="errorPage">
+
+		<div align="center">
+			<h1><b>404</b></h1>
+			<h1>Page Not Found</h1>
+			<p>The requested <span style="padding: 5px; background: #fcfcfc; color: #f20;"><?=$this->boot['active_c'].'/'.$this->boot['active_v']?></span> page cannot be rendered. Please see sitemap below for avaliable Controllers.</p>
+			<ul>
+				<?php
+					$controllers = $this->boot['controllers'];
+					foreach($controllers as $key => $controller)
+					{
+						if(!empty($controller))
+						{
+							$controller = trim($controller);
+							echo '<li><a href="'.$Url->set($controller).'">'.ucwords($controller).'</a></li>';
+						}
+					}
+				?>
+			</ul>
+		</div>
+
+</div>	

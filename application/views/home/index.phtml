@@ -1,0 +1,13 @@
+
+<?=$Model->load('auth')?>
+<?=$Out->message?>
+
+<img src="<?=$Image->load('online-shop.jpg')?>">
+
+<a href="<?=$Url->set('home/about')?>"> About us </a>
+
+<form action="@login/auth" method="post">
+	<input type="text" name="fullname" class="form-control">
+	<button name="login" class="btn btn-success">Login</button>
+</form>
+
