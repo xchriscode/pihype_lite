@@ -1,1 +1,27 @@
-#pihype_alert{display: block; transition: all 0.4s ease; font-size: 16px; height: auto;}
+#pihype_alert{transition: all 0.4s ease; font-size: 16px; box-shadow: 0px 5px 10px #ddd; 
+margin-bottom: 30px;
+width: 100%; display: block;}
+#defult_message{height: auto; box-shadow: 0px 5px 10px #ddd; margin-bottom: 30px;
+width: 100%; display: block; position: fixed; top: 0; left: 0; z-index: 999;}
+#defult_message .alert, #pihype_alert .alert{background: inherit !important; color: inherit; border: 0px; font-size: 18px !important;
+font-weight: normal; 
+padding: 0px;
+margin-left: 44px;
+width: 100%;
+display: block;
+word-wrap: break-word;
+color: #333;
+text-shadow: 0px 2px 1px #fff; 
+}
+.alert-wrapper{display: block; width: 90%; margin: 0 auto;padding-top: 19px;
+padding-left: 10px; padding-right: 10px;}
+#defult_message img, #pihype_alert img{width: 40px; height: 40px; display: inline-block;}
+#defult_message h1, #pihype_alert h1{display: inline-block; font-size: 24px; margin: 0px; padding: 0px;
+text-transform: uppercase;}
+.clearfix{clear: both;}
+.pull-left{float: left;}
+.pull-right{float: right;}
+.hide-alert{font-size: 3em; text-shadow: 0px 2px 1px #fff;
+position: relative; right: 20px;}
+.hide-alert:hover{cursor: pointer; text-shadow: 0px 2px 2px #fff; transform: rotate(20deg);
+display: block;}

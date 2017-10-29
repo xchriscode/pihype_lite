@@ -57,9 +57,11 @@ filaname: home_c.php
 			$model = $this->model;
 
 			//If you want to log a message and generate output when view has been rendered
-			$message->success("message here");
-			$message->warning("You should be good!");
-			$message->error("Authorization failed!");
+			$message->success("message here",1);
+			$message->warning("You should be good!",1);
+			$message->error("Authorization failed!",1);
+
+			//Param 2 is optional, will be needed if you want to display output with $Out->message in your view.
 
 			//Render a view
 			$app->render("index"); or $app->render("home/index"); or $app->render("about/index")
@@ -69,6 +71,14 @@ filaname: home_c.php
 
 			// How to call a model from a controller
 			$login = $model->login("/users"); // users is a method in login class
+
+			// Send a model data back to view
+			$data = $model->account("/all");
+			// Send to a view
+			$app->send($data)->render("accounts");
+
+			// In accounts view you can collect $data with
+			$data_sent variable.
 		}
 	}
 	
@@ -84,6 +94,9 @@ Models can be accessed from a controller like this:
 	// Assume we have a model called home_m.php with a method called users
 	$model->home("/users");
 	// That's how fast we could work with models
+	// You can diplay messages with
+	$message = $this->message
+	$message->success("Your message here"); // will output message without calling $Out->message 
 
 # How form sends data to a model from a view
 	
@@ -128,6 +141,8 @@ See example:
 	<a href="<?=$Url->set('home/login')?>"> Login </a>
 	// Display a message
 	<?=$Out->message?>
+	// Run a Select query
+	<?=$data->get('users/1')?>
 	// And much more..
 
 If view not found, would be created when script runs.

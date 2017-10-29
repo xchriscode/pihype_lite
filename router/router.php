@@ -2,7 +2,7 @@
 
 // Set Database connection
 $router->db_config = "-h localhost; -u root; -p ; -n ";
-$router->connect_with = "mysqli";
+$router->connect_with = ""; // mysqli or pdo
 
 // URL Mapping
 $router->url = "";
@@ -15,7 +15,7 @@ $router->router_default = "home/index";
 $router->controller_register("-r home ");
 
 // Set Secure Pages/Controllers
-$router->when("account")->check_session("userid,memberid")->else_goto("home/login");
+$router->when("#controller")->check_session("#session_vars")->else_goto("#path");
 // When working with sessions and restricted pages, you might wanna use this
 /*
 	Explain code above:

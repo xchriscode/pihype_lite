@@ -6,8 +6,9 @@ class App extends Bootloader
 	public $packager;
 	public $boot;
 	private $controller;
-	private $sent;
+	private static $sent;
 	public $model;
+	private static $invalid_get_request;
 
 	public function __construct($boot = "", $controller = "")
 	{
@@ -27,7 +28,7 @@ class App extends Bootloader
 	// Handle sent data
 	final function send($data)
 	{
-		$this->sent = $data;
+		app::$sent = $data;
 		return $this;
 	}
 
@@ -58,6 +59,26 @@ class App extends Bootloader
 		}
 	}
 
+	// GET VERB from database
+	public function get($verb)
+	{
+		$db = $this->controller->{$this->boot['connectWith']};
+
+		$split = explode("/", $verb);
+
+		$param = strtoupper($split[0]);
+
+		if($param != "PUT" && $param != "DELETE" && $param != "POST")
+		{
+			return $db->verb("get/$verb");
+		}
+		else
+		{
+			$this->controller->message->error("Can only perform a GET request, $param not allowed in views");
+			$this->controller->addon->message->model_out();
+		}
+	}
+
 	// Render view
 	public function render($name, $data = "")
 	{
@@ -67,23 +88,31 @@ class App extends Bootloader
 		// get main assets file
 		import("assets/assets");
 		import("config/url.config");
+		import("config/form.config");
 		// include message addon
 
 		// Variables avaliable to views
+		$data_sent = app::$sent;
 		$Controller = $this->controller;
 		$Assets = new Assets($this->boot['url']);
 		$Image = $Assets->image();
 		$Css = $Assets->css();
 		$Js = $Assets->js();
-		$Sent = $this->sent || $data;
 		$Model = $this->getModelData();
+		$data = $this;
 		$Url = new Url($this->boot['url']);
 		$Out = is_object($this->controller) ? $this->controller->addon->message->out() : "";
+		$Post = isset($_SESSION['post.json']) ? json_decode($_SESSION['post.json']) : new Form;
 
 		if($name == 404 || $name == 204){ $this->packager->title .= " Page Error "; 
 		$this->packager->assets->css .= ",error.css"; }
 
 		include_once("assets/head.php");
+
+		echo app::$invalid_get_request;
+
+		// Display messages from the model
+		$this->controller->addon->message->model_out();
 
 		// Developed by xchriscode #General public lincense
 		$this->public_license();

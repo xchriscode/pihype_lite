@@ -7,13 +7,16 @@ class Model
 	public $modelData;
 	public $boot;
 	public $post = false;
+	protected $controller;
+	public $caller = "Model";
 
 
-	function __construct($args)
+	function __construct($args, $controller)
 	{
 		$this->EH = $args['EH'];
 		$this->activedb = $args['activedb'];
 		$this->boot = $args;
+		$this->controller = $controller;
 
 		if(isset($_SESSION['post.json']))
 		{
@@ -22,8 +25,12 @@ class Model
 		}
 	}
 
+	public function load($meth)
+	{
+		echo $meth;
+	}
 
-	function __call($meth, $args)
+	public function __call($meth, $args)
 	{
 		// check if file exits in models/
 		$models_dir = "application/models/{$meth}_m.php";
@@ -42,6 +49,8 @@ class Model
 
 			if(method_exists($class, $method))
 			{
+				MessageAddon::$switch = 1;
+				$model->message = $this->controller->addon->message;
 				$this->modelData = $model->{$method}(@$args[1]);
 
 				BootLoader::$modelData[$method] = $this->modelData;

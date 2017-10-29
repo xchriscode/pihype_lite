@@ -89,20 +89,28 @@ class MysqliQueries
 
 				$run = $this->query("select * from {$verbRequest[1]} $args");
 
-				if($run->num_rows > 0 && $run->num_rows == 1)
+				if($run !== false)
 				{
-					return $run->fetch_object();
-				}
-				elseif($run->num_rows > 1)
-				{
-					return $run;
+					if($run->num_rows > 0 && $run->num_rows == 1)
+					{
+						return $run->fetch_object();
+					}
+					elseif($run->num_rows > 1)
+					{
+						return $run;
+					}
+					else
+					{
+						return false;
+					}	
+					
+					$run->close();
 				}
 				else
 				{
-					return false;
+					echo "Invalid Database table > {$verbRequest[1]}";
 				}
-
-				$run->close();
+				
 			}
 		}
 		elseif(strtoupper($verbRequest[0]) == "PUT")
@@ -110,20 +118,56 @@ class MysqliQueries
 			// insert
 			if($jsonData !== "")
 			{
-				$jsonData = preg_replace("/[}\{]/", "", $jsonData);
-				$json = explode(",", $jsonData);
-
 				$keys = "(";
 				$values = "(";
 
 				$where = "where ";
 
-				foreach($json as $key => $val)
+				$start_operation = false;
+
+				if(is_object($jsonData) || is_array($jsonData))
 				{
-					$val = explode(":", $val);
-					$keys .= trim($val[0]).",";
-					$values .= $val[1].",";
-					$where .= $val[0]."={$val[1]} and ";
+					$start_operation = true;
+
+					foreach($jsonData as $key => $val)
+					{
+						if($val != "" && is_string($key))
+						{
+							$keys .= "$key,";
+
+							if(is_int($val) || is_float($val))
+							{
+								$values .= $val.",";
+								$where .= $key."={$val} and ";		
+							}
+							else
+							{
+								$values .= "'$val',";
+								$where .= $key."='{$val}' and ";	
+							}
+							
+						}
+						
+					}
+				}
+				else
+				{
+					if(strlen($jsonData) > 3)
+					{
+						$jsonData = preg_replace("/[}\{]/", "", $jsonData);
+						$json = explode(",", $jsonData);
+
+						$start_operation = true;
+
+						foreach($json as $key => $val)
+						{
+							$val = explode(":", $val);
+							$keys .= trim($val[0]).",";
+							$values .= $val[1].",";
+							$where .= $val[0]."={$val[1]} and ";
+						}	
+					}
+					
 				}
 
 				$keys = rtrim($keys, ", ");
@@ -134,21 +178,31 @@ class MysqliQueries
 
 				$where = rtrim($where, "and ");
 
-				//check to avoid duplication
-				$check = $this->query("select * from {$verbRequest[1]} $where");
 
-				if($check->num_rows == 0)
+				//check to avoid duplication
+				if($start_operation == true)
 				{
-					$insert = $this->query("insert into {$verbRequest[1]} $keys $values");
-					return $con->affected_rows;	
+					$check = $this->query("select * from {$verbRequest[1]} $where");
+
+					if($check->num_rows == 0)
+					{
+						$insert = $this->query("insert into {$verbRequest[1]} $keys $values");
+						return $con->affected_rows;	
+					}
+					else
+					{
+						echo 2;
+						return false;
+					}
+					
+
+					$check->close();	
 				}
 				else
 				{
 					return false;
 				}
 				
-
-				$check->close();
 			}
 			else
 			{

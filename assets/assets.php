@@ -55,54 +55,56 @@ class Assets
 	// Load from assets folder
 	public function load($file)
 	{
-		$get_ext = explode(".", $file);
-		$extension = strtoupper(end($get_ext));
-
-		// check extensions
-		if($extension == "JPG" || $extension == "JPEG" || $extension == "GIF" || $extension == "PNG")
+		if(!empty($file))
 		{
-			$this->call = "images";
-		}
-		elseif($extension == "CSS")
-		{
-			$this->call = "css";
-		}
-		elseif($extension == "JS")
-		{
-			$this->call = "js";
-		}
+			$get_ext = explode(".", $file);
+			$extension = strtoupper(end($get_ext));
+
+			// check extensions
+			if($extension == "JPG" || $extension == "JPEG" || $extension == "GIF" || $extension == "PNG")
+			{
+				$this->call = "images";
+			}
+			elseif($extension == "CSS")
+			{
+				$this->call = "css";
+			}
+			elseif($extension == "JS")
+			{
+				$this->call = "js";
+			}
 
 
-		// Image asked for?
-		if($this->call == "images")
-		{
-			$source = $this->url."/assets/images/{$file}";
-			$new_destination = "assets/images/compressed/{$file}";
-			$image = $this->compress_image($source, $new_destination, $this->compress_size);
-			return $image;
-		}
+			// Image asked for?
+			if($this->call == "images")
+			{
+				$source = $this->url."/assets/images/{$file}";
+				$new_destination = "assets/images/compressed/{$file}";
+				$image = $this->compress_image($source, $new_destination, $this->compress_size);
+				return $image;
+			}
 
-		// CSS asked for?
-		elseif($this->call == "css")
-		{
-			$loc = $this->url."/assets/css/{$file}";
-			return 	$loc;
-		}
+			// CSS asked for?
+			elseif($this->call == "css")
+			{
+				$loc = $this->url."/assets/css/{$file}";
+				return 	$loc;
+			}
 
-		// JAVASCRIPT asked for?
-		elseif($this->call == "js")
-		{
-			$loc = $this->url."/assets/js/{$file}";
-			return 	$loc;
-		}
+			// JAVASCRIPT asked for?
+			elseif($this->call == "js")
+			{
+				$loc = $this->url."/assets/js/{$file}";
+				return 	$loc;
+			}
 
-		// Private Folder asked for?
-		else
-		{
-			$loc = $this->url."/assets/{$file}";
-			return 	$loc;
+			// Private Folder asked for?
+			else
+			{
+				$loc = $this->url."/assets/{$file}";
+				return 	$loc;
+			}	
 		}
-
 	}
 
 	private function compress_image($source, $new_destination, $compress)

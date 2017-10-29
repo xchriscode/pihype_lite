@@ -83,18 +83,22 @@ class PdoQueries extends PDO
 
 				$run = $this->query("select * from {$verbRequest[1]} $args");
 
-				if($run->rowCount() > 0 && $run->rowCount() == 1)
+				if($run !== false)
 				{
-					return $run->fetch();
+					if($run->rowCount() > 0 && $run->rowCount() == 1)
+					{
+						return $run->fetch();
+					}
+					elseif($run->rowCount() > 1)
+					{
+						return $run;
+					}
+					else
+					{
+						return false;
+					}	
 				}
-				elseif($run->rowCount() > 1)
-				{
-					return $run;
-				}
-				else
-				{
-					return false;
-				}
+				
 			}
 		}
 		elseif(strtoupper($verbRequest[0]) == "PUT")

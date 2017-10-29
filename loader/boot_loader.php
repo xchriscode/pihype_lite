@@ -201,13 +201,22 @@ class BootLoader extends DatabaseHandler
 		}
 		else
 		{
+			$post_request = false;
 			// NOT A RESTFUL REQUEST
-			if(isset($_GET['qr'])){ $view = $_GET['qr'];}
-			if(isset($_GET['qa'])){ $arg = $_GET['qa'];}
+			if(isset($_GET['qr'])){ $view = $_GET['qr']; $post_request = true;}
+			if(isset($_GET['qa'])){ $arg = $_GET['qa']; $post_request = true;}
 
-			if(substr($cont, 0,1) != "@")
+			if(substr($cont, 0,1) != "@" && substr($view, 0,1) != "@" && substr($arg, 0,1) != "@")
 			{ 
 				file_put_contents("logs/url.txt", "$cont/$view/$arg");
+
+				if($post_request === false)
+				{
+					if(isset($_SESSION['post.json']))
+					{
+						unset($_SESSION['post.json']);	
+					}
+				}
 			}
 			else
 			{
@@ -216,6 +225,8 @@ class BootLoader extends DatabaseHandler
 				$view = $url[1];
 				$arg = $url[2] || "";
 
+				$post_request = true;
+				
 				$postData = "";
 				foreach($_POST as $key => $val)
 				{
@@ -225,11 +236,15 @@ class BootLoader extends DatabaseHandler
 				
 				$postData = json_encode($postData);
 
+				unset($_SESSION['post.json']);
+
 				$_SESSION['post.json'] = $postData;
 
 				$other = !empty($arg) ? "&qa={$arg}" : "";
 				header("location: {$this->url}/{$cont}?qr={$view}{$other}");
 			}
+
+			
 
 			$invalid_controller = false;
 
@@ -251,7 +266,7 @@ class BootLoader extends DatabaseHandler
 					$class = new $cont;
 				
 					// load extensions
-					$class->model = new Model($this->boot);
+					$class->model = new Model($this->boot, $class);
 					$class->addon = new Addon($this->boot);
 					$class->app = new App($this->boot, $class);
 					$class->post = $class->model->post;
