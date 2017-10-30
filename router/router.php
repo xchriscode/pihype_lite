@@ -2,17 +2,17 @@
 
 // Set Database connection
 $router->db_config = "-h localhost; -u root; -p ; -n ";
-$router->connect_with = ""; // mysqli or pdo
+$router->connect_with = "mysqli"; // mysqli or pdo
 
 // URL Mapping
 $router->url = "";
 $router->golive = 0; // This would end error reporting and log all errrors when set to 1
 
 // Set default Controller and view
-$router->router_default = "home/index";
+$router->router_default = "startup/home";
 
 // Register Controller
-$router->controller_register("-r home ");
+$router->controller_register("-r startup ");
 
 // Set Secure Pages/Controllers
 $router->when("#controller")->check_session("#session_vars")->else_goto("#path");

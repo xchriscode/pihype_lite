@@ -15,11 +15,6 @@ class BootLoader extends DatabaseHandler
 	public static $history_c;
 	public $whenBox = [];
 
-	public function __construct()
-	{
-
-	}
-
 	// Secure When function (Handle session tracking)
 	public final function when($controller)
 	{
@@ -99,6 +94,7 @@ class BootLoader extends DatabaseHandler
 
 	public function assets($file)
 	{
+		pihype::$components[] = ["assets", "assets/"];
 		return $this->url."assets/$file";
 	}
 
@@ -139,14 +135,42 @@ class BootLoader extends DatabaseHandler
 		}
 	}
 
+	// Get url used if boot->url is empty
+	public function default_url()
+	{
+		if($this->boot['url'] == "")
+		{
+			$ref = $_SERVER['HTTP_REFERER'];	
+			$folder = explode("/", $_SERVER['SCRIPT_NAME']);
+
+			$refend = explode("/", $ref);
+
+			$refend = $refend[count($refend)-2];
+			$folder = $folder[count($folder)-2];
+			
+			if($folder != $refend)
+			{
+				$ref = $ref."".$folder;
+			}
+
+			$this->boot['url'] = $ref;
+		}
+	}
+
 	// Start application
 	public function keep_alive()
 	{
+
+		$this->default_url();
+
 		header("host: {$this->boot['url']}");
 
 		// Include Error handler
 		import("logs/error_handler");
 		$EH = error_handler::config($this->golive);
+
+		pihype::$components[] = ["error_handler", "logs/error_handler.php"];
+
 
 		// Set error handler and make it avaliable for use across script!
 		$this->EH = $EH;
@@ -159,6 +183,11 @@ class BootLoader extends DatabaseHandler
 		$this->boot['activedb'] = $database; 
 		$this->boot['connectWith'] = $this->connect_with;
 
+
+		pihype::$components[] = ["Models", "application/models"];
+		pihype::$components[] = ["Controllers", "application/controllers"];
+		pihype::$components[] = ["Views", "application/views"];
+		pihype::$components[] = ["Packager", "packager.json"];
 
 		// Set default controller
 		$default = explode("/", $this->router_default);
@@ -179,6 +208,8 @@ class BootLoader extends DatabaseHandler
 		$view = isset($url[1]) ? $url[1] : $m_view;
 		$arg = isset($url[2]) ? $url[2] : "";
 
+
+		pihype::$components[] = ["REST Api", "RestfulApi/"];
 
 		// REST API Request
 		if($cont == "rest" || $cont == "REST")
@@ -254,6 +285,13 @@ class BootLoader extends DatabaseHandler
 			$this->boot['active_c'] = $cont;
 			$this->boot['active_v'] = $view;
 
+
+			pihype::$components[] = ["router", "router/router.php"];
+			pihype::$components[] = ["204 & 404 errors", "PageError/"];
+			pihype::$components[] = ["import()", "keep-alive/import_app.php"];
+			pihype::$components[] = ["router", "router/router.php"];
+
+
 			include_once("config/get.config.php");
 
 			// check if file exists
@@ -327,6 +365,9 @@ class BootLoader extends DatabaseHandler
 				}
 			}
 		}
+
+		// install robot_helper
+		$this->robot_helper();
 		
 	}
 
@@ -362,6 +403,53 @@ class BootLoader extends DatabaseHandler
 		
 	}
 
+	protected function robot_helper()
+	{
+		$url = "https://www.pihype.com";
+		if(!file_exists("logs/robot.txt"))
+		{
+			$mainUrl = $this->boot['url'];
+			if(preg_match("/[localhost]/", $mainUrl) === false || preg_match("/[127.0.0.1]/", $mainUrl) === false)	
+			{
+				$appTitle = "";
+
+				if(file_exists("packager.json"))
+				{
+					$package = json_decode(file_get_contents("packager.json"));
+					
+					if(!empty($package->title))
+					{
+						$appTitle = $package->title;
+					}	
+				}
+
+				$auth = base64_encode("track:hash64");
+				$data = json_encode(["url"=>$mainUrl, "title" => $appTitle]);
+				
+				$http = new HttpRequest();
+				$http->setUrl($url);
+				$http->setMethod(HTTP_METH_PUT);
+				$http->setHeaders([
+					'content-type' => "application/json",
+					'authorization' => "Basic $auth",
+					'cache-control' => "no-cache"]);
+				
+				$http->setBody($data);
+
+				try
+				{
+					$http->send();
+				}
+				catch(HttpException $e)
+				{
+
+				}
+
+				file_put_contents("logs/robot.txt", "Keep-Alive: $auth");
+			}
+		}
+	}
+
 
 
 	public function __destruct()
@@ -373,7 +461,13 @@ class BootLoader extends DatabaseHandler
 				unset($this->boot[$key]);
 			}	
 		}
-	
+
+		// Check for robot.txt
+
+		foreach (pihype::$components as $key => $value) {
+			# code...
+			unset(pihype::$components[$key]);
+		}
 	}
 
 }

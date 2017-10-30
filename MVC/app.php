@@ -79,6 +79,7 @@ class App extends Bootloader
 		}
 	}
 
+
 	// Render view
 	public function render($name, $data = "")
 	{
@@ -109,11 +110,12 @@ class App extends Bootloader
 
 		include_once("assets/head.php");
 
-		echo app::$invalid_get_request;
-
 		// Display messages from the model
-		$this->controller->addon->message->model_out();
-
+		if(is_object($this->controller))
+		{
+			$this->controller->addon->message->model_out();	
+		}
+		
 		// Developed by xchriscode #General public lincense
 		$this->public_license();
 		// Should not remove - will kill program if you do.
@@ -218,11 +220,9 @@ class App extends Bootloader
 		}
 	}
 
-
-	public function redir($path)
+	public function track_install()
 	{
-		header("location: {$this->url}{$path}");
+		
 	}
-
 }
 ?>

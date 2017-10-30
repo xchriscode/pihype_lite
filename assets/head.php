@@ -12,9 +12,3 @@
 
 </head>
 <body>
-<div class="well">
-<h1>Pihype Blog</h1>
-<ul class="lists">
-	<li><a class="btn btn-primary" href="<?=$Url->set('home/post')?>">Post New</a></li>
-</ul>
-</div>

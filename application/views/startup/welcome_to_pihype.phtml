@@ -1,0 +1,69 @@
+<div class="well" align="center">
+	<h1>@ Pihype</h1>
+	<h3>A Better PHP MVC Framework for secure, fast, dynamic web development.</h3>
+	<h4 class="btn btn-default" onclick="alert('Version 1.0.1, Running on PHP <?=phpversion()?>')">Stable Version 1.0.1</h4>
+</div>
+
+<div class="container">
+
+	<div class="col-sm-6 col-lg-6">
+		<blockquote>
+			<p style="font-size: 16px;">Pihype supports Simultaneous development. Multiple developers can work simultaneously on your model, controller and views. Gives ease of modification, code re-use, Restful Api, plugins etc. It's smarter and much faster. </p>
+			<footer>From Xchriscode Pihype.</footer>
+		</blockquote>
+	</div>
+	<div class="col-sm-6 col-lg-6">
+		<div class="pull-right">
+			<a href="https://www.github.com/xchriscode/pihype_lite" target="_blank" class="btn btn-default"> Git Documentation </a>
+			<a href="https://www.pihype.com" target="_blank" class="btn btn-success"> Pihype Official </a>
+			<a href="http://www.facebook.com/sharer.php?u=https://www.pihype.com" target="_blank" class="btn btn-primary"> Like & Share </a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="table-responsive" style="box-shadow: 0px 0px 10px #eee; padding: 10px;">
+		<h3>- Installed</h3>
+		<table class="pre-scrollable table table-borderd">
+			<tr>
+				<th>Components</th>
+				<th></th>
+				<th>Status</th>
+				<th>File Path </th>
+			</tr>
+
+			<?php
+				$com = pihype::$components;
+
+				foreach($com as $k => $v)
+				{
+					?>
+						<tr>
+							<td><?=ucwords($v[0])?></td>
+							<td>
+								  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+								  aria-valuemin="0" aria-valuemax="100" style="width:100%">
+								    100% Complete
+								  </div>
+							</td>
+							<td><span class="label label-success">Done!</span></td>
+							<td><?=$v[1]?></td>
+						</tr>
+
+					<?php
+				}
+			?>
+		</table>
+
+		<style type="text/css">
+			th{background: #eee; color: #000; font-size: 16px; font-weight: normal;}
+		</style>
+	</div>
+
+
+	<div class="well" style="margin-top: 10px; font-size: 16px;">
+		<p>To begin development, please open <mark>packager.json</mark> and <mark>router/router.php</mark> for configurations.</p>
+	</div>
+
+</div>
