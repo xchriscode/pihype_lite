@@ -1,0 +1,146 @@
+<!-- 
+	Developer: Ifeanyi Amadi
+	Country: Nigeria
+	Version: 1.0.1 
+	Website: www.pihype.com
+	Company: Kodedapp
+	Instagram: @xchriscode, Facebook: #xchriscode
+	Project: Pihype PHP MVC framwork
+	TelePhone: +2348183789446
+	Email: info@pihype.com
+-->
+
+<div class="well bg-used">
+	<div class="container">
+	<h1>Pihype -v1.0.1</h1>
+	<h3>A Smart PHP MVC Framework for a secure, fast, dynamic web application.
+	</h3>
+	</div>
+</div>
+
+<div class="container">
+
+	<div class="col-sm-6 col-lg-6">
+		<blockquote>
+			<p style="font-size: 16px;">Pihype supports Simultaneous development. Multiple developers can work simultaneously on your model, controller and views. Gives ease of modification, code re-use, Restful Api, plugins etc. It's smarter and much faster. </p>
+			<footer>From Xchriscode Pihype.</footer>
+		</blockquote>
+	</div>
+	<div class="col-sm-6 col-lg-6">
+		<div class="pull-right">
+			<a href="https://www.github.com/xchriscode/pihype_lite" target="_blank" class="btn btn-default"> Git Documentation </a>
+			<a href="https://www.pihype.com" target="_blank" class="btn btn-success"> Pihype Official </a>
+			<a href="http://www.facebook.com/sharer.php?u=https://www.pihype.com" target="_blank" class="btn btn-primary"> Like & Share </a>
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="well" style="margin-top: 10px; font-size: 17px; border-radius: 0px; padding: 10px; text-align: left; background: #fff; box-shadow: 0px 0px 20px #ddd; color: #000;">
+		<p>Please open <mark>packager.json</mark> and <mark>router/router.php</mark> for configurations.</p>
+	</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="col-md-6 col-lg-6">
+	<div class="list-group" style="box-shadow: 0px 0px 10px #eee; padding: 10px;">
+		<h3 style="color: rgb(231, 62, 3)">- Features</h3>
+		<ol class="list-group">
+			<li class="list-group-item">Image Optimizer. (Compresses all the images to give you a fast page load time)</li>
+			<li class="list-group-item">Overloading Design Pattern & Singleton Pattern</li>
+			<li class="list-group-item">DNS database string connection</li>
+			<li class="list-group-item">Email and SMS helper class</li>
+			<li class="list-group-item">Safe SQL queries that prevents you from hackers</li>
+			<li class="list-group-item">JavaScript & CSS autoloader</li>
+			<li class="list-group-item">RESFUL API built in function</li>
+			<li class="list-group-item">Addon, shared class/function supports</li>
+			<li class="list-group-item">Fully MVC</li>
+			<li class="list-group-item">Mysqli & PDO built-in functions</li>
+			<li class="list-group-item">Dynamic error reporting and logs</li>
+			<li class="list-group-item">Supports your PHP Version <?=phpversion()?></li>
+			<li class="list-group-item">Easy to implement, easy to share, easy to document</li>
+		</ol>
+	</div>
+	</div>
+
+	<div class="col-md-6 col-lg-6">
+	<div class="table-responsive" style="box-shadow: 0px 0px 10px #eee; padding: 10px;">
+		<h3 style="color: rgb(231, 62, 3);">- Installed</h3>
+		<table class="pre-scrollable table table-borderd">
+			<tr>
+				<th>Components</th>
+				
+				<th>Paths </th>
+				<th></th>
+			</tr>
+
+			<?php
+				$com = main::$components;
+
+				foreach($com as $k => $v)
+				{
+					?>
+						<tr>
+							<td><?=ucwords($v[0])?></td>
+							
+							<td><?=$v[1]?></td>
+							<td>
+								  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+								  aria-valuemin="0" aria-valuemax="100" style="width:100%">
+								    100%
+								  </div>
+							</td>
+						</tr>
+
+					<?php
+				}
+			?>
+		</table>
+	</div>
+
+</div>
+	
+	<style type="text/css">
+		
+		body{background: #fff;}
+		th{background: #15CA5A;
+    color: #fff;
+    font-size: 16px;
+    font-weight: normal;}
+    	td{background: #fff;}
+		.well{background: #10127d;
+color: #fff;
+border: 0px;
+padding-bottom: 34px;
+margin-bottom: 40px; padding-top: -10px;}
+			.btn-success, .progress-bar-success{    background: #f7f01c;
+    color: #000;
+    border-radius: 5px;
+border: 1px solid #f7f01c;
+}
+			.label-danger{ background: #FFC107;
+    color: #000;}
+			.well h1{ padding-bottom: 6px; font-size: 45px;font-weight: bold;text-shadow: 0px -6px 0px #b9380b;}
+			.well h3{text-transform: capitalize;font-size: 20px;}
+			.bg-used{position: relative; top: 0; left: 0; height: 300px; padding-top: 40px;
+				height: auto;
+box-shadow: 0px 0px 10px #b7b7b7;
+}
+			.bg-used::before{    background: rgb(231, 62, 3);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    content: "";}
+			.bg-used h1, .bg-used h3, .bg-used h4{position: relative; z-index: 10;}
+			mark{    background: none;
+    color: #15ca5a;}
+    blockquote{background: #fff; border: 1px solid #ddd;}
+	
+	</style>
+
+	<div class="clearfix"></div>
+
+
+</div>

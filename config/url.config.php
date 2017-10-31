@@ -10,7 +10,7 @@ class Url
 
 	function set($path)
 	{
-		$path = $this->url.'/'.$path;
+		$path = trim($this->url.'/'.$path, "/");
 		return $path;
 	}
 }

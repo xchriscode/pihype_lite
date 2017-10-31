@@ -9,6 +9,5 @@
 	<meta name="description" content="<?=$packager->description?>">
 	<!-- load css -->
 	<?=$packager->load->app_css()?>
-
 </head>
 <body>

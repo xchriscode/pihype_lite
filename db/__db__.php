@@ -22,7 +22,7 @@ class DatabaseHandler extends Adapter
 			$this->db_vars["pass"] = trim(str_replace("-p", "", $con[2]));
 			$this->db_vars["name"] = trim(str_replace("-n", "", $con[3]));
 
-			pihype::$components[] = ["$this->connect_with", "db/"];
+			main::$components[] = ["$this->connect_with", "db/"];
 
 			return $this->new_connection();	
 		}

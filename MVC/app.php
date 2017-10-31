@@ -5,17 +5,14 @@ class App extends Bootloader
 {
 	public $packager;
 	public $boot;
-	private $controller;
+	public static $controller;
 	private static $sent;
 	public $model;
 	private static $invalid_get_request;
 
-	public function __construct($boot = "", $controller = "")
+	public function __construct()
 	{
-		// Save called controller. 
-		$this->controller = $controller;
 		// Save declared variables and kill later
-		$this->boot = $boot;
 		//  Load packager to App class 
 		$packager = file_get_contents("packager.json");
 		$packager = json_decode($packager);
@@ -45,7 +42,7 @@ class App extends Bootloader
 	final function renderNew($path)
 	{
 		$c_path = explode("/", $path);
-		$boot = (object) $this->boot;
+		$boot = (object) BootLoader::$helper;
 		if(isset($_SESSION['post.json'])){ unset($_SESSION['post.json']); }
 		$_SESSION['message_out'] = MessageAddon::$message;
 		$_SESSION['message_out_code'] = MessageAddon::$messageCode;
@@ -62,7 +59,7 @@ class App extends Bootloader
 	// GET VERB from database
 	public function get($verb)
 	{
-		$db = $this->controller->{$this->boot['connectWith']};
+		$db = BootLoader::$helper['class']->{BootLoader::$helper['connectWith']};
 
 		$split = explode("/", $verb);
 
@@ -74,11 +71,10 @@ class App extends Bootloader
 		}
 		else
 		{
-			$this->controller->message->error("Can only perform a GET request, $param not allowed in views");
-			$this->controller->addon->message->model_out();
+			BootLoader::$helper['class']->message->error("Can only perform a GET request, $param not allowed in views");
+			BootLoader::$helper['class']->addon->message->model_out();
 		}
 	}
-
 
 	// Render view
 	public function render($name, $data = "")
@@ -94,16 +90,58 @@ class App extends Bootloader
 
 		// Variables avaliable to views
 		$data_sent = app::$sent;
-		$Controller = $this->controller;
-		$Assets = new Assets($this->boot['url']);
-		$Image = $Assets->image();
-		$Css = $Assets->css();
-		$Js = $Assets->js();
-		$Model = $this->getModelData();
+		$controller = BootLoader::$helper['class'];
+		
+		// load from another directory
+		$asset = function($path)
+		{
+			$Assets = new Assets();
+			return $Assets->load($path);
+		};
+
+
+		// load images
+		$image = function($path)
+		{
+			$Assets = new Assets();
+			$img = $Assets->image();
+			return $img->load($path);
+		};
+
+		// load css
+		$css = function($path)
+		{
+			$Assets = new Assets();
+			$cs = $Assets->css();
+			return $cs->load($path);
+		};
+
+		// load javascript
+		$js = function($path)
+		{
+			$Assets = new Assets();
+			$js = $Assets->js();
+			return $js->load($path);
+		};
+
 		$data = $this;
-		$Url = new Url($this->boot['url']);
-		$Out = is_object($this->controller) ? $this->controller->addon->message->out() : "";
-		$Post = isset($_SESSION['post.json']) ? json_decode($_SESSION['post.json']) : new Form;
+
+		// set url
+		$url = function($path)
+		{
+			$uri = new Url();
+			return $uri->set($path);
+		};
+
+		// set output
+		$out = function()
+		{
+			$out = is_object($this->controller) ? BootLoader::$helper['class']->addon->message->out() : "";
+			return $out->message;	
+		};
+
+		
+		$post = isset($_SESSION['post.json']) ? json_decode($_SESSION['post.json']) : new Form;
 
 		if($name == 404 || $name == 204){ $this->packager->title .= " Page Error "; 
 		$this->packager->assets->css .= ",error.css"; }
@@ -111,14 +149,11 @@ class App extends Bootloader
 		include_once("assets/head.php");
 
 		// Display messages from the model
-		if(is_object($this->controller))
+		if(is_object(BootLoader::$helper['class']))
 		{
-			$this->controller->addon->message->model_out();	
+			BootLoader::$helper['class']->addon->message->model_out();	
 		}
 		
-		// Developed by xchriscode #General public lincense
-		$this->public_license();
-		// Should not remove - will kill program if you do.
 
 		if($name == 404 || $name == 204)
 		{
@@ -132,8 +167,8 @@ class App extends Bootloader
 			// if length is 1, then we can use current controller
 			if(count($name) == 1)
 			{
-				$name = $this->boot['c_controller']."/".$name[0];
-				$folder = $this->boot['c_controller'];
+				$name = BootLoader::$helper['c_controller']."/".$name[0];
+				$folder = BootLoader::$helper['c_controller'];
 			}
 			else
 			{
@@ -163,6 +198,10 @@ class App extends Bootloader
 			}	
 		}
 
+		// Developed by xchriscode #General public lincense
+		$this->public_license();
+		// Should not remove - will kill program if you do.
+
 		// Include Page Footer
 		include_once("assets/foot.php");
 
@@ -171,6 +210,8 @@ class App extends Bootloader
 	final public function app_css()
 	{
 		$css = explode(",",$this->packager->assets->css);
+		$url = BootLoader::$helper['url'];
+
 		if(isset($css[0]) && !empty($css[0]))
 		{
 			foreach($css as $key => $val)
@@ -187,7 +228,7 @@ class App extends Bootloader
 				}
 				else
 				{
-					echo "\n <!--$val file autoloaded-->\n".'<link rel="stylesheet" type="text/css" href="'.$this->url.'/assets/css/'.$val.'"/>'."\n";	
+					echo "\n <!--$val file autoloaded-->\n".'<link rel="stylesheet" type="text/css" href="'.$url.'/assets/css/'.$val.'"/>'."\n";	
 				}
 				
 			}
@@ -197,6 +238,8 @@ class App extends Bootloader
 	final public function app_js()
 	{
 		$js = explode(",",$this->packager->assets->javascripts);
+		$url = BootLoader::$helper['url'];
+
 		if(isset($js[0]) && !empty($js[0]))
 		{
 			foreach($js as $key => $val)
@@ -213,7 +256,7 @@ class App extends Bootloader
 				}
 				else
 				{
-					echo "\n <!--$val file autoloaded-->\n".'<script type="text/javascript" src="'.$this->url.'/assets/js/'.$val.'"></script>'."\n";
+					echo "\n <!--$val file autoloaded-->\n".'<script type="text/javascript" src="'.$url.'/assets/js/'.$val.'"></script>'."\n";
 				}
 				
 			}

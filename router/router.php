@@ -1,7 +1,7 @@
 <?php
 
 // Set Database connection
-$router->db_config = "-h localhost; -u root; -p ; -n ";
+$router->db_config = "-h localhost; -u root; -p ; -n";
 $router->connect_with = "mysqli"; // mysqli or pdo
 
 // URL Mapping
@@ -9,10 +9,10 @@ $router->url = "";
 $router->golive = 0; // This would end error reporting and log all errrors when set to 1
 
 // Set default Controller and view
-$router->router_default = "startup/home";
+$router->router_default = "pihype/home";
 
 // Register Controller
-$router->controller_register("-r startup ");
+$router->controller_register("-r pihype");
 
 // Set Secure Pages/Controllers
 $router->when("#controller")->check_session("#session_vars")->else_goto("#path");

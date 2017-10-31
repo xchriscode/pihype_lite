@@ -7,12 +7,13 @@
 	Company: Kodedapp
 	Instagram: @xchriscode, Facebook: #xchriscode
 	Project: Pihype PHP MVC framwork
-	Phone: +2348183789446
+	TelePhone: +2348183789446
+	Email: info@pihype.com
 */
 
 include_once("keep-alive/import_app.php");
 
-function pihype(){$args = func_get_arg(0); $args == "start-app" ? import('keep-alive/pihype_app') : die("Missing Pihype Class. Cannot continue."); }
+function pihype(){$args = func_get_arg(0); $args == "start-app" ? import('keep-alive/main_app') : die("Missing Main Class. Cannot continue."); }
 
 // Bootloader
 import("loader/boot_loader");

@@ -5,11 +5,6 @@ class Assets
 	private $call = null;
 	private $compress_size = 80;
 
-	public function __construct($url)
-	{
-		$this->url = $url;
-	}
-
 	// Load images and compress them
 	public function image($name = "")
 	{
@@ -29,7 +24,7 @@ class Assets
 	{
 		if($name != "")
 		{
-			$loc = $this->url."/assets/css/{$name}";
+			$loc = BootLoader::$helper['url']."/assets/css/{$name}";
 			return 	$loc;
 		}
 		else
@@ -43,7 +38,7 @@ class Assets
 	{
 		if($name != "")
 		{
-			$loc = $this->url."/assets/js/{$name}";
+			$loc = BootLoader::$helper['url']."/assets/js/{$name}";
 			return 	$loc;
 		}
 		else
@@ -78,7 +73,7 @@ class Assets
 			// Image asked for?
 			if($this->call == "images")
 			{
-				$source = $this->url."/assets/images/{$file}";
+				$source = BootLoader::$helper['url']."/assets/images/{$file}";
 				$new_destination = "assets/images/compressed/{$file}";
 				$image = $this->compress_image($source, $new_destination, $this->compress_size);
 				return $image;
@@ -87,21 +82,21 @@ class Assets
 			// CSS asked for?
 			elseif($this->call == "css")
 			{
-				$loc = $this->url."/assets/css/{$file}";
+				$loc = BootLoader::$helper['url']."/assets/css/{$file}";
 				return 	$loc;
 			}
 
 			// JAVASCRIPT asked for?
 			elseif($this->call == "js")
 			{
-				$loc = $this->url."/assets/js/{$file}";
+				$loc = BootLoader::$helper['url']."/assets/js/{$file}";
 				return 	$loc;
 			}
 
 			// Private Folder asked for?
 			else
 			{
-				$loc = $this->url."/assets/{$file}";
+				$loc = BootLoader::$helper['url']."/assets/{$file}";
 				return 	$loc;
 			}	
 		}
@@ -132,12 +127,16 @@ class Assets
 				}
 
 				$newimage = imagejpeg($newimage, $new_destination, $compress);
-				return $this->url.'/'.$new_destination;
+				return BootLoader::$helper['url'].'/'.$new_destination;
 			}
 			else
 			{
 				return $source;
 			}	
+		}
+		else
+		{
+			return $source;
 		}
 		
 	}

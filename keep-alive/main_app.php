@@ -3,7 +3,7 @@
 // PHP Version
 $version = phpversion();
 
-class Pihype
+class Main
 {
 	protected $license = null;
 	protected $hash = null;

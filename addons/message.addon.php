@@ -1,7 +1,7 @@
 <?php
 class MessageAddon
 {
-	private static $message;
+	private static $message = "";
 	public static $messageCode = ""; //1 = success, 2 = warning, 3 = error
 	public static $switch = 0;
 
@@ -98,6 +98,10 @@ class MessageAddon
 
 			return (object) $obj;
 		}
+		else
+		{
+			return (object) ['message' => ''];
+		}
 		
 	}
 
@@ -130,7 +134,7 @@ class MessageAddon
 			'.$message.'</span> <span class="pull-right">
 			<i class="hide-alert" onclick="hide_alert(\'defult_message\')">&times;</i></span> <div class="clearfix"></div>';}
 
-			elseif($code == 3){$color = "#FF9494";
+			elseif($code == 3){$color = "#f20";
 			$body = '<span class="alert-wrapper pull-left"><img src="'.$this->image->load('icons/error-icon.png').'"/>
 			<h1>Error !</h1>
 			'.$message.'</span> <span class="pull-right">

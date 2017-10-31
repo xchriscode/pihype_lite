@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Import function, handles file inclusions
 function import($path)

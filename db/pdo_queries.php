@@ -136,7 +136,7 @@ class PdoQueries extends PDO
 				if($check->rowCount() == 0)
 				{
 					$insert = $this->query("insert into {$verbRequest[1]} $keys $values");
-					return $insert->rowCount();	
+					return true;				
 				}
 				else
 				{

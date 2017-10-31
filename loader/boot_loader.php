@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 //Include Database Handler
 import("db/__db__");
@@ -14,6 +13,7 @@ class BootLoader extends DatabaseHandler
 	public $controllers = "";
 	public static $history_c;
 	public $whenBox = [];
+	public static $helper;
 
 	// Secure When function (Handle session tracking)
 	public final function when($controller)
@@ -94,7 +94,7 @@ class BootLoader extends DatabaseHandler
 
 	public function assets($file)
 	{
-		pihype::$components[] = ["assets", "assets/"];
+		main::$components[] = ["assets", "assets/"];
 		return $this->url."assets/$file";
 	}
 
@@ -140,17 +140,29 @@ class BootLoader extends DatabaseHandler
 	{
 		if($this->boot['url'] == "")
 		{
-			$ref = $_SERVER['HTTP_REFERER'];	
+			$ref = "http://".$_SERVER['REMOTE_ADDR'];	
 			$folder = explode("/", $_SERVER['SCRIPT_NAME']);
 
 			$refend = explode("/", $ref);
 
 			$refend = $refend[count($refend)-2];
-			$folder = $folder[count($folder)-2];
+			$mainfolder = $folder[count($folder)-2];
 			
 			if($folder != $refend)
 			{
-				$ref = $ref."".$folder;
+				array_pop($folder);
+				array_pop($folder); 
+
+				if($folder[count($folder)-1] != $mainfolder)
+				{
+					$folder = implode("/", $folder);
+					$ref = $ref.$folder."/".$mainfolder;
+				}
+				else
+				{
+					$ref = $ref."/".$mainfolder;
+				}
+				
 			}
 
 			$this->boot['url'] = $ref;
@@ -169,7 +181,7 @@ class BootLoader extends DatabaseHandler
 		import("logs/error_handler");
 		$EH = error_handler::config($this->golive);
 
-		pihype::$components[] = ["error_handler", "logs/error_handler.php"];
+		main::$components[] = ["error_handler", "logs/error_handler.php"];
 
 
 		// Set error handler and make it avaliable for use across script!
@@ -184,10 +196,11 @@ class BootLoader extends DatabaseHandler
 		$this->boot['connectWith'] = $this->connect_with;
 
 
-		pihype::$components[] = ["Models", "application/models"];
-		pihype::$components[] = ["Controllers", "application/controllers"];
-		pihype::$components[] = ["Views", "application/views"];
-		pihype::$components[] = ["Packager", "packager.json"];
+		main::$components[] = ["Models", "application/models"];
+		main::$components[] = ["Controllers", "application/controllers"];
+		main::$components[] = ["Views", "application/views"];
+		main::$components[] = ["Packager", "packager.json"];
+		main::$components[] = ["Bootstrap 3", "assets/css/, assets/js/"];
 
 		// Set default controller
 		$default = explode("/", $this->router_default);
@@ -209,7 +222,7 @@ class BootLoader extends DatabaseHandler
 		$arg = isset($url[2]) ? $url[2] : "";
 
 
-		pihype::$components[] = ["REST Api", "RestfulApi/"];
+		main::$components[] = ["REST Api", "RestfulApi/"];
 
 		// REST API Request
 		if($cont == "rest" || $cont == "REST")
@@ -286,13 +299,15 @@ class BootLoader extends DatabaseHandler
 			$this->boot['active_v'] = $view;
 
 
-			pihype::$components[] = ["router", "router/router.php"];
-			pihype::$components[] = ["204 & 404 errors", "PageError/"];
-			pihype::$components[] = ["import()", "keep-alive/import_app.php"];
-			pihype::$components[] = ["router", "router/router.php"];
+			main::$components[] = ["router", "router/router.php"];
+			main::$components[] = ["204 & 404 errors", "PageError/"];
+			main::$components[] = ["import()", "keep-alive/import_app.php"];
+			main::$components[] = ["router", "router/router.php"];
 
 
 			include_once("config/get.config.php");
+
+			Bootloader::$helper = $this->boot;
 
 			// check if file exists
 			if(file_exists("application/controllers/{$cont}_c.php"))
@@ -302,11 +317,12 @@ class BootLoader extends DatabaseHandler
 				if(class_exists($cont))
 				{
 					$class = new $cont;
-				
+					BootLoader::$helper['class'] = $class;
 					// load extensions
-					$class->model = new Model($this->boot, $class);
-					$class->addon = new Addon($this->boot);
-					$class->app = new App($this->boot, $class);
+					
+					$class->model = new Model();
+					$class->addon = new Addon();
+					$class->app = new App();
 					$class->post = $class->model->post;
 					$class->get = new SanitizeGet();
 					$class->{$this->connect_with} = $database;
@@ -327,7 +343,7 @@ class BootLoader extends DatabaseHandler
 				else
 				{
 					// load 204 error
-					$app = new App($this->boot);
+					$app = new App();
 					$app->render(204);
 				}
 			}
@@ -335,7 +351,7 @@ class BootLoader extends DatabaseHandler
 			{
 				$invalid_controller = true;
 				// load 404 error
-				$app = new App($this->boot);
+				$app = new App();
 				$app->render(404);
 			}
 
@@ -349,9 +365,10 @@ class BootLoader extends DatabaseHandler
 					$class = new $m_controller;
 
 					// load extensions
-					$class->model = new Model($this->boot);
-					$class->addon = new Addon($this->boot);
-					$class->app = new App($this->boot, $class);
+					BootLoader::$helper['class'] = $class;
+					$class->model = new Model();
+					$class->addon = new Addon();
+					$class->app = new App();
 					$class->post = $class->model->post;
 					$class->get = new SanitizeGet();
 					$class->{$this->connect_with} = $database;
@@ -405,7 +422,8 @@ class BootLoader extends DatabaseHandler
 
 	protected function robot_helper()
 	{
-		$url = "https://www.pihype.com";
+		$url = "https://www.pihype.com/rest/keep_alive";
+
 		if(!file_exists("logs/robot.txt"))
 		{
 			$mainUrl = $this->boot['url'];
@@ -423,28 +441,31 @@ class BootLoader extends DatabaseHandler
 					}	
 				}
 
-				$auth = base64_encode("track:hash64");
+				$auth = base64_encode("robot_txt:hashrate2");
 				$data = json_encode(["url"=>$mainUrl, "title" => $appTitle]);
-				
-				$http = new HttpRequest();
-				$http->setUrl($url);
-				$http->setMethod(HTTP_METH_PUT);
-				$http->setHeaders([
-					'content-type' => "application/json",
-					'authorization' => "Basic $auth",
-					'cache-control' => "no-cache"]);
-				
-				$http->setBody($data);
+
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, [
+					'Content-Type:application/json',
+					'Authorization:Basic '.$auth,
+					'Cache-Control:no-cache']);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 
 				try
 				{
-					$http->send();
+					$data = curl_exec($ch);
+					$err = curl_error($ch);
+					curl_close($ch);	
 				}
-				catch(HttpException $e)
+				catch(Exception $e)
 				{
-
+					
 				}
-
+				
 				file_put_contents("logs/robot.txt", "Keep-Alive: $auth");
 			}
 		}
@@ -464,9 +485,9 @@ class BootLoader extends DatabaseHandler
 
 		// Check for robot.txt
 
-		foreach (pihype::$components as $key => $value) {
+		foreach (main::$components as $key => $value) {
 			# code...
-			unset(pihype::$components[$key]);
+			unset(main::$components[$key]);
 		}
 	}
 

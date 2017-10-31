@@ -78,6 +78,10 @@ class MysqliQueries
 
 					$run->close();
 				}
+				else
+				{
+					return false;
+				}
 
 			}
 			else
@@ -109,6 +113,7 @@ class MysqliQueries
 				else
 				{
 					echo "Invalid Database table > {$verbRequest[1]}";
+					return false;
 				}
 				
 			}
@@ -187,11 +192,10 @@ class MysqliQueries
 					if($check->num_rows == 0)
 					{
 						$insert = $this->query("insert into {$verbRequest[1]} $keys $values");
-						return $con->affected_rows;	
+						return true;	
 					}
 					else
 					{
-						echo 2;
 						return false;
 					}
 					

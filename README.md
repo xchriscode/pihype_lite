@@ -1,5 +1,5 @@
 # Pihype
-## A Better PHP MVC Framework for secure, fast, dynamic web development.
+## A Smart PHP MVC Framework for a secure, fast, dynamic web application.
 
 @ Version 1.0.1 Beta
 
@@ -102,6 +102,7 @@ Models can be accessed from a controller like this:
 	
 	<form action="@login/users" method="post">
 		// input tags and more
+		<input name="username" value="<?=$post->username?>"/>
 	</form>
 
 Data sent is first handled by the controller, so must be declared in the controller before the model would process the request.
@@ -130,17 +131,17 @@ See example:
 	// Asssume file name is application/views/home/index.phtml
 
 	// GET css
-	<link rel="stylesheet" href="<?=$Css->load('main')?>"/>
+	<link rel="stylesheet" href="<?=$css('main')?>"/>
 	// GET Javascript
-	<script src="<?=$Js->load('bootstrap')?>"></script>
+	<script src="<?=$js('bootstrap')?>"></script>
 	// GET image
-	<img src="<?=Image->load('pihype.jpg')?>"/>
+	<img src="<?=$image('pihype.jpg')?>"/>
 	// Load other files from assets folder
-	<video><source src="<?=$Assets->load('media/video.mp4')?>"></source></video>
+	<video><source src="<?=$asset('media/video.mp4')?>"></source></video>
 	// Set a link
-	<a href="<?=$Url->set('home/login')?>"> Login </a>
+	<a href="<?=$url('home/login')?>"> Login </a>
 	// Display a message
-	<?=$Out->message?>
+	<?=$out()?>
 	// Run a Select query
 	<?=$data->get('users/1')?>
 	// And much more..
@@ -191,6 +192,8 @@ Database methods are avalible for all you models and controllers, below are list
 	$db = $this->mysqli;
 	// or if pdo
 	$db = $this->pdo;
+	// or 
+	$db = $this->db; // will by itself determine if mysqli or pdo is active for use
 
 	// Make a select query
 	$db->verb("get/users/1");
@@ -226,7 +229,7 @@ This returns result[s] as an object
 Pihype has it ready for you. With a little configuration you are good to serve restful requests.
 
 	Open: RestfulApi/restapi.php
-
+	
 	private $auth_column = ["username","password"];
 	private $auth_table = "authentication";
 	private $digest = true;
@@ -242,3 +245,15 @@ Pihype has it ready for you. With a little configuration you are good to serve r
 	3. PUT (Avoids data duplication, supports multiple requests)
 	4. DELETE
 	Returns JSON encoded data, takes JSON formatted data.
+
+# Making Restful requests
+We have an addon called rest.addon.php, it's an helper class for all your REST requests. See example
+
+	$rest = $this->addon->rest;
+
+	$rest->postman("get- http://www.pihype.com/rest/users/1");
+	$rest->postman("post- http://www.pihype.com/rest/users/2", ['user'=>'paul']);
+	$rest->postman("put- http://www.pihype.com/rest/users", ['user'=>'mack']);
+	$rest->postman("delete- http://www.pihype.com/rest/users/3");
+
+	On success, response would be returned. On failure, error would be generated. 

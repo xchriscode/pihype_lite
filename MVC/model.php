@@ -11,13 +11,8 @@ class Model
 	public $caller = "Model";
 
 
-	function __construct($args, $controller)
+	function __construct()
 	{
-		$this->EH = $args['EH'];
-		$this->activedb = $args['activedb'];
-		$this->boot = $args;
-		$this->controller = $controller;
-
 		if(isset($_SESSION['post.json']))
 		{
 			$post = json_decode($_SESSION['post.json']);
@@ -25,10 +20,6 @@ class Model
 		}
 	}
 
-	public function load($meth)
-	{
-		echo $meth;
-	}
 
 	public function __call($meth, $args)
 	{
@@ -41,7 +32,8 @@ class Model
 
 			$class = ucfirst($meth);
 			$model = new $class;
-			$model->{$this->boot['connectWith']} = $this->activedb;
+			$model->{BootLoader::$helper['connectWith']} = BootLoader::$helper['activedb'];
+			$model->db = BootLoader::$helper['activedb'];
 
 			// maximum of 2 arguments
 			// argument 1 is the method
@@ -50,7 +42,7 @@ class Model
 			if(method_exists($class, $method))
 			{
 				MessageAddon::$switch = 1;
-				$model->message = $this->controller->addon->message;
+				$model->message = BootLoader::$helper['class']->addon->message;
 				$this->modelData = $model->{$method}(@$args[1]);
 
 				BootLoader::$modelData[$method] = $this->modelData;
@@ -58,13 +50,13 @@ class Model
 			}
 			else
 			{
-				$this->EH->log_error("Cannot find method -{$method} in $models_dir");
+				BootLoader::$helper['EH']->log_error("Cannot find method -{$method} in $models_dir");
 			}
 
 		}
 		else
 		{
-			$this->EH->log_error("Cannot find model -{$meth} in /models");
+			BootLoader::$helper['EH']->log_error("Cannot find model -{$meth} in /models");
 		}
 	}
 

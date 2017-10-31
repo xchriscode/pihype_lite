@@ -2,7 +2,7 @@
 
 pihype("start-app");
 
-class Adapter extends Pihype
+class Adapter extends Main
 {
 	public $db_vars;
 	public $instance = null;

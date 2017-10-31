@@ -1,7 +1,7 @@
-#pihype_alert{transition: all 0.4s ease; font-size: 16px; box-shadow: 0px 5px 10px #ddd; 
+#pihype_alert{transition: all 0.4s ease; font-size: 16px; box-shadow: 0px 5px 7px #333; 
 margin-bottom: 30px;
 width: 100%; display: block;}
-#defult_message{height: auto; box-shadow: 0px 5px 10px #ddd; margin-bottom: 30px;
+#defult_message{height: auto; box-shadow: 0px 5px 7px #333; margin-bottom: 30px;
 width: 100%; display: block; position: fixed; top: 0; left: 0; z-index: 999;}
 #defult_message .alert, #pihype_alert .alert{background: inherit !important; color: inherit; border: 0px; font-size: 18px !important;
 font-weight: normal; 
@@ -11,7 +11,7 @@ width: 100%;
 display: block;
 word-wrap: break-word;
 color: #333;
-text-shadow: 0px 2px 1px #fff; 
+text-shadow: 0px 3px 1px rgba(0,0,0,0.1); 
 }
 .alert-wrapper{display: block; width: 90%; margin: 0 auto;padding-top: 19px;
 padding-left: 10px; padding-right: 10px;}

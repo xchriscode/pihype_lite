@@ -1,13 +1,6 @@
 <?php
 class Addon
 {
-	private $boot = [];
-
-	public function __construct($boot)
-	{
-		$this->boot = $boot;
-	}
-
 	public function __get($name)
 	{
 		import("assets/assets");
@@ -16,7 +9,7 @@ class Addon
 		{
 			include_once($location);
 
-			$assets = new Assets($this->boot['url']);
+			$assets = new Assets();
 
 			$className = ucfirst($name)."Addon";
 
@@ -24,7 +17,13 @@ class Addon
 			{
 				$class = new $className;
 				$class->image = $assets->image();
+				MessageAddon::$switch = 1;
+				$class->addon = new Addon();
 				return $class;
+			}
+			else
+			{
+				return false;
 			}
 		}
 	}
