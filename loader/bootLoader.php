@@ -102,7 +102,7 @@ class BootLoader extends DatabaseHandler
 	{
 		$cnt = explode("-r", $controllers);
 
-		$this->controllers = $cnt;
+		$this->boot['controllers'] = $cnt;
 
 		foreach($cnt as $key => $controller)
 		{
@@ -187,7 +187,6 @@ class BootLoader extends DatabaseHandler
 		// Set error handler and make it avaliable for use across script!
 		$this->EH = $EH;
 		$this->boot['EH'] = $EH;
-		$this->boot['controllers'] = $this->controllers;
 
 
 		// Start Database 
@@ -321,12 +320,12 @@ class BootLoader extends DatabaseHandler
 					// load extensions
 					
 					$class->model = new Model();
-					$class->addon = new Addon();
+					$class->ai = new Addin();
 					$class->app = new App();
 					$class->post = $class->model->post;
 					$class->get = new SanitizeGet();
 					$class->{$this->connect_with} = $database;
-					$class->message = $class->addon->message;
+					$class->message = $class->ai->message;
 
 					// load view requested
 					if(method_exists($class, $view))
@@ -367,12 +366,12 @@ class BootLoader extends DatabaseHandler
 					// load extensions
 					BootLoader::$helper['class'] = $class;
 					$class->model = new Model();
-					$class->addon = new Addon();
+					$class->ai = new Addin();
 					$class->app = new App();
 					$class->post = $class->model->post;
 					$class->get = new SanitizeGet();
 					$class->{$this->connect_with} = $database;
-					$class->message = $class->addon->message;
+					$class->message = $class->ai->message;
 
 					$class->{$m_view}($arg);
 				}

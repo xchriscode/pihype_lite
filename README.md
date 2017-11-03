@@ -1,4 +1,4 @@
-# Pihype
+# Pihype (PiHpe)
 ## A Smart PHP MVC Framework for a secure, fast, dynamic web application.
 
 @ Version 1.0.1 Beta
@@ -126,7 +126,7 @@ See example:
 		// Render a view outside home controller
 		$app->renderNew("about/index");
 
-# How to display errors, call images, js, videos, mp3, css etc from a view 
+# How to display errors, call images, get access to current controller, load js, videos, mp3, css etc from a view 
 	
 	// Asssume file name is application/views/home/index.phtml
 
@@ -144,6 +144,10 @@ See example:
 	<?=$out()?>
 	// Run a Select query
 	<?=$data->get('users/1')?>
+	// Get access to current controller properties and methods
+	$self->firstname;
+	$self->lastname;
+	$self->calulate();
 	// And much more..
 
 If view not found, would be created when script runs.
@@ -158,7 +162,7 @@ Packager file can be found in the root directory.
 			"keywords":"",
 			"version":"1.0",
 			"description":"",
-			"framework":"Pihype Lite aplha",
+			"framework":"Pihype (PiHpe) ",
 			"website":"www.pihype.com",
 			"author":"",
 			"assets":{
@@ -172,7 +176,7 @@ Packager file can be found in the root directory.
 Header and footer file can found in assets/ directory. 
 
 # Database
-Pihype supports MYSQLI and PDO, can be configured in the router/router.php file. 
+Pihype (PiHpe) supports MYSQLI and PDO, can be configured in the router/router.php file. 
 See example below:
 
 	// Set Database connection
@@ -226,7 +230,7 @@ This returns result[s] as an object
 
 
 # Working with RESTFUL APIs
-Pihype has it ready for you. With a little configuration you are good to serve restful requests.
+Pihype (PiHpe) has it ready for you. With a little configuration you are good to serve restful requests.
 
 	Open: RestfulApi/restapi.php
 	
@@ -247,9 +251,9 @@ Pihype has it ready for you. With a little configuration you are good to serve r
 	Returns JSON encoded data, takes JSON formatted data.
 
 # Making Restful requests
-We have an addon called rest.addon.php, it's an helper class for all your REST requests. See example
+We have an addin called rest_ai.php, it's an helper class for all your REST requests. See example
 
-	$rest = $this->addon->rest;
+	$rest = $this->ai->rest;
 
 	$rest->postman("get- http://www.pihype.com/rest/users/1");
 	$rest->postman("post- http://www.pihype.com/rest/users/2", ['user'=>'paul']);

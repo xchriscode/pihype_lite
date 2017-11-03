@@ -18,13 +18,14 @@ class Main
 	// Contain general public license
 	protected function public_license()
 	{
-		$tags = "\n<span style=\"display:none;\">\n #pihype, #xchriscode, #pihype mvc, \n #pihype php mvc, #pihype web, #Pihype, \n #PIHYPE, #PiHype, #Xchriscode, \n @Pihype, @pihype, @xchriscode </span>\n\n";
+		$tags = "\n<span style=\"display:none;\">\n #pihype, #xchriscode, #pihype pihpe, \n
+		#pihpe, #PiHpe </span>\n\n";
 		echo $tags;
 	}
 
 }
 
 // Headers config
-header("x-powered-by: Pihype (PHP $version)");
-header("techology: Pihype -v 1.1");
+header("x-powered-by: Pihype - PiHpe (PHP $version)");
+header("techology: PiHpe -v 1.1");
 header("link: www.pihype.com");

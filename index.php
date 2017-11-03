@@ -11,21 +11,21 @@
 	Email: info@pihype.com
 */
 
-include_once("keep-alive/import_app.php");
+include_once("keep-alive/import_ka.php");
 
-function pihype(){$args = func_get_arg(0); $args == "start-app" ? import('keep-alive/main_app') : die("Missing Main Class. Cannot continue."); }
+function pihype(){$args = func_get_arg(0); $args == "start-app" ? import('keep-alive/main_ka') : die("Missing Main Class. Cannot continue."); }
 
 // Bootloader
-import("loader/boot_loader");
+import("loader/bootLoader");
 
-// Include Controller class and View
-import("MVC/app");
+// Include Controller class for rendering views and more.
+import("MVC/appClass");
 
 // Include Model File
-import("MVC/model");
+import("MVC/modelClass");
 
 // Include Addons File
-import("MVC/addons");
+import("MVC/addinClass");
 
 // Instance of BootLoader class
 $router = new Bootloader();

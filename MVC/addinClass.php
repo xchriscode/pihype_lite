@@ -1,28 +1,30 @@
 <?php
-class Addon
+class Addin
 {
 	public function __get($name)
 	{
 		import("assets/assets");
-		$location = "addons/{$name}.addon.php";
+		$location = "add-in/{$name}_ai.php";
 		if(file_exists($location))
 		{
 			include_once($location);
 
 			$assets = new Assets();
 
-			$className = ucfirst($name)."Addon";
+			$className = ucfirst($name);
+			$ai = new Addin();
 
 			if(class_exists($className))
 			{
 				$class = new $className;
 				$class->image = $assets->image();
-				MessageAddon::$switch = 1;
-				$class->addon = new Addon();
+				$class->ai = $ai;
 				return $class;
 			}
 			else
 			{
+				
+				$ai->message->error("$location add-in cannot be loaded. Class $className not found.");
 				return false;
 			}
 		}

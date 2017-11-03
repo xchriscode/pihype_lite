@@ -1,5 +1,5 @@
 <?php
-class RestAddon
+class Rest
 {
 	// GET, POST, PUT DELETE
 	private $user = "";
@@ -60,7 +60,7 @@ class RestAddon
 
 			if($error)
 			{
-				$message = $this->addon->message;
+				$message = $this->ai->message;
 				$message->warning($error);
 			}
 			else

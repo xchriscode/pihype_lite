@@ -1,8 +1,9 @@
-#pihype_alert{transition: all 0.4s ease; font-size: 16px; box-shadow: 0px 5px 7px #333; 
-margin-bottom: 30px;
-width: 100%; display: block;}
-#defult_message{height: auto; box-shadow: 0px 5px 7px #333; margin-bottom: 30px;
-width: 100%; display: block; position: fixed; top: 0; left: 0; z-index: 999;}
+#pihype_alert{transition: all 0.4s ease; font-size: 16px; box-shadow: 0px 1px 2px #333; 
+margin-bottom: 10px;
+width: 100%; display: block; }
+.pihype_alert{transition: display 0.4s ease;}
+#defult_message{height: auto; box-shadow: 0px 1px 2px #333; margin-bottom: 1px;
+width: 100%; display: block; position: relative; top: 0; left: 0; z-index: 999;}
 #defult_message .alert, #pihype_alert .alert{background: inherit !important; color: inherit; border: 0px; font-size: 18px !important;
 font-weight: normal; 
 padding: 0px;

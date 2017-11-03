@@ -34,6 +34,7 @@ class Model
 			$model = new $class;
 			$model->{BootLoader::$helper['connectWith']} = BootLoader::$helper['activedb'];
 			$model->db = BootLoader::$helper['activedb'];
+			$model->ai = BootLoader::$helper['class']->ai;
 
 			// maximum of 2 arguments
 			// argument 1 is the method
@@ -41,8 +42,8 @@ class Model
 
 			if(method_exists($class, $method))
 			{
-				MessageAddon::$switch = 1;
-				$model->message = BootLoader::$helper['class']->addon->message;
+				Message::$switch = 1;
+				$model->message = BootLoader::$helper['class']->ai->message;
 				$this->modelData = $model->{$method}(@$args[1]);
 
 				BootLoader::$modelData[$method] = $this->modelData;

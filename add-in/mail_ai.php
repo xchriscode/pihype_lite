@@ -1,5 +1,5 @@
 <?php
-class MailAddon
+class Mail
 {
 	function send()
 	{

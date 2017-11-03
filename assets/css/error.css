@@ -1,7 +1,7 @@
 .error-warning{padding: 20px; font-size: 20px; background: #f90; color: #fff;
 border-left: 10px solid #f20; margin-top: 5px; margin-bottom: 5px; box-shadow: 0px 6px 5px #eee;}
 .errorPage{padding-top: 0px; background: #fcfcfc;}
-.errorPage h1{font-size: 5em; margin: 0px;}
+.errorPage h1{font-size: 5em; margin: 0px; color: #010d23;}
 .errorPage h1 b{font-size: 6em;}
 .errorPage p{font-size: 2em; padding: 10px; margin-top: 10px;}
 .errorPage p span{border:1px solid #eee;}

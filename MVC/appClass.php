@@ -44,8 +44,8 @@ class App extends Bootloader
 		$c_path = explode("/", $path);
 		$boot = (object) BootLoader::$helper;
 		if(isset($_SESSION['post.json'])){ unset($_SESSION['post.json']); }
-		$_SESSION['message_out'] = MessageAddon::$message;
-		$_SESSION['message_out_code'] = MessageAddon::$messageCode;
+		$_SESSION['message_out'] = Message::$message;
+		$_SESSION['message_out_code'] = Message::$messageCode;
 		if(count($c_path) > 1)
 		{
 			header("location: {$boot->url}/{$path}");
@@ -72,7 +72,7 @@ class App extends Bootloader
 		else
 		{
 			BootLoader::$helper['class']->message->error("Can only perform a GET request, $param not allowed in views");
-			BootLoader::$helper['class']->addon->message->model_out();
+			BootLoader::$helper['class']->ai->message->model_out();
 		}
 	}
 
@@ -81,16 +81,17 @@ class App extends Bootloader
 	{
 		$packager = (object) $this->packager;
 		$this->packager->load = $this;
+		$this->boot = BootLoader::$helper;
 
 		// get main assets file
 		import("assets/assets");
 		import("config/url.config");
 		import("config/form.config");
-		// include message addon
+		// include message ai
 
 		// Variables avaliable to views
 		$data_sent = app::$sent;
-		$controller = BootLoader::$helper['class'];
+		$self = isset(BootLoader::$helper['class']) ? BootLoader::$helper['class'] : "";
 		
 		// load from another directory
 		$asset = function($path)
@@ -129,29 +130,41 @@ class App extends Bootloader
 		// set url
 		$url = function($path)
 		{
-			$uri = new Url();
+			$uri = new Url(BootLoader::$helper['url']);
 			return $uri->set($path);
 		};
 
 		// set output
 		$out = function()
 		{
-			$out = is_object($this->controller) ? BootLoader::$helper['class']->addon->message->out() : "";
-			return $out->message;	
+			$out = BootLoader::$helper['class']->ai->message->out();
+			if(is_object($out) && count($out) > 0)
+			{
+				foreach($out as $i => $message)
+				{
+					if(is_array($message))
+					{
+						foreach($message as $k => $val)
+						{
+							echo $val;
+						}	
+					}
+					
+				}
+			}	
 		};
-
-		
 		$post = isset($_SESSION['post.json']) ? json_decode($_SESSION['post.json']) : new Form;
-
+		$ai = isset(BootLoader::$helper['class']) ? BootLoader::$helper['class']->ai : "";
+		
 		if($name == 404 || $name == 204){ $this->packager->title .= " Page Error "; 
 		$this->packager->assets->css .= ",error.css"; }
 
 		include_once("assets/head.php");
 
 		// Display messages from the model
-		if(is_object(BootLoader::$helper['class']))
+		if(isset(BootLoader::$helper['class']) && is_object(BootLoader::$helper['class']))
 		{
-			BootLoader::$helper['class']->addon->message->model_out();	
+			BootLoader::$helper['class']->ai->message->model_out();	
 		}
 		
 

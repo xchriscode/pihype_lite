@@ -1,32 +1,28 @@
 (function(){
 	// PIHYPE 
+
 	// Handle Alerts
-	var pih_alert = document.getElementById("pihype_alert");
-	if(typeof pih_alert == "object" && typeof pih_alert != "undefined"
-		&& pih_alert != null)
-	{
-		// message would disapear in 4 seconds
-		if(!pih_alert.hasAttribute("data-alert-hide"))
-		{
-			setTimeout(function(){
-				pih_alert.setAttribute("data-alert-hide",true);
-				pih_alert.style.display = "none";
-			},8000);
-		}
-	}
+	var pih_alert = document.getElementsByClassName("pihype_alert");
 
-	var alertb = document.getElementById("defult_message");
-	if(typeof alertb == "object" && alertb != null)
+	if(typeof pih_alert != "undefined" && pih_alert.length > 0)
 	{
-		setTimeout(function(){
-				alertb.style.display = "none";
-		},8000);
+		var len = pih_alert.length;
+		var id = 0;
+		setInterval(function(){
+			if(typeof pih_alert[id] != "undefined")
+			{
+				pih_alert[id].style.display = "none";
+			}
+			id++;
+		}, 7000);
 	}
-
 })();
 
 function hide_alert(id)
 {
-	var alertb = document.getElementById(id);
-	alertb.style.display = "none";
+	var pih_alert = document.getElementsByClassName("alert"+id);
+	if(typeof pih_alert != "undefined" && pih_alert.length > 0)
+	{
+		pih_alert[0].style.display = "none";
+	}
 }
