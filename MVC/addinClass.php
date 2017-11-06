@@ -19,6 +19,8 @@ class Addin
 				$class = new $className;
 				$class->image = $assets->image();
 				$class->ai = $ai;
+				$class->db = Bootloader::$helper['activedb'];
+				$class->{Bootloader::$helper['connectWith']} = Bootloader::$helper['activedb']; 
 				return $class;
 			}
 			else
